@@ -1,5 +1,4 @@
 /// <reference path=".config/vc.d.ts" />
-Debugger.On();
 var tommy = new Player(0);
 
 var shanyAutosCoords = {
@@ -16,38 +15,40 @@ var RUGER_MODEL_ID = 276;
 var RUGER_ID = 27;
 var INGRAM_MODEL_ID = 283;
 var INGRAM_ID = 24;
+var BODYGUARD_BEHAVIOR = 7;
+var ROCKET_EXPLOSION = 2;
+var GTA_VI_SPRITE = 35;
 
 var deloreanCoords = {
     x : -1076.094482421875,
     y : -863.5663452148438,
     z : -12.290136337280273
 }
-tommy.setCoordinates(shanyAutosCoords.x - 20.00,shanyAutosCoords.y,shanyAutosCoords.z);
+
+// tommy.setCoordinates(shanyAutosCoords.x - 20.00,shanyAutosCoords.y,shanyAutosCoords.z);
 var executed = false;
 var alreadyFollowTommy = false;
 
-var blip = Blip.AddSpriteForCoord(shanyAutosCoords.x,shanyAutosCoords.y,shanyAutosCoords.z, 35);
+var blip = Blip.AddSpriteForCoord(shanyAutosCoords.x,shanyAutosCoords.y,shanyAutosCoords.z, GTA_VI_SPRITE);
 var sphere = Sphere.Create(shanyAutosCoords.x,shanyAutosCoords.y,shanyAutosCoords.z,1.00);
 
-var message = ["Jason and Lucia its comming"];
 
 while (true) {
     wait(10000);
-    if(!executed && tommy.locateOnFoot2D(shanyAutosCoords.x,shanyAutosCoords.y,10.00,1.00,true)){
-        Text.PrintNow(message[0],25000,27);
-        sphere.remove();
+    if(!executed && tommy.locateOnFoot2D(shanyAutosCoords.x,shanyAutosCoords.y,10.00,1.00,false)){
+                sphere.remove();
         blip.remove();
-        var timeTravelExplosition = Fx.AddExplosion(deloreanCoords.x,deloreanCoords.y,deloreanCoords.z,2);
+        var timeTravelExplosition = Fx.AddExplosion(deloreanCoords.x,deloreanCoords.y,deloreanCoords.z,ROCKET_EXPLOSION);
         loadModel(DELORAN_ID);
         var delorean = Car.Create(DELORAN_ID,deloreanCoords.x,deloreanCoords.y,deloreanCoords.z);
         delorean.changeColor(1,2);
         delorean.setProofs(true,true,true,true,true);
         delorean.setDrivingStyle(2);
         loadModel(JASON_ID);
-        var jason = Char.CreateInsideCar(delorean,7,73);
+        var jason = Char.CreateInsideCar(delorean,BODYGUARD_BEHAVIOR,JASON_ID);
         jason.addArmor(100);
         loadModel(LUCIA_ID);
-        var lucia = Char.CreateAsPassenger(delorean,7,24,1);
+        var lucia = Char.CreateAsPassenger(delorean,BODYGUARD_BEHAVIOR,LUCIA_ID,1);
         lucia.addArmor(100);
         delorean.gotoCoordinates(shanyAutosCoords.x,shanyAutosCoords.y,shanyAutosCoords.z);
         executed = true;
